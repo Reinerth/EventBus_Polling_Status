@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Eventbus</title>
+</head>
+
+<body>
+
+    <script src="eventBus.js"></script>
+    <script>
+        // ES5 Traditional Syntax except "let"
+        'use strict';
+
+        // The event "somethingHappend" is polling this Callback-function every 2 seconds.
+        let myFunction = function(){
+            console.log('callback myFunction triggered');
+        };
+        
+        // The event "checkingNewMails" is polling this Callback-function every second.
+        let checkingNewMailsFunc = function(){
+            console.log('checkingNewMailsFunc triggered ###############################');
+        };
+
+        // Be aware of, that the function returns the list as object and is loaded asynchronious, 
+        // so it could be that it is not loaded completly if you request it before all events have been triggered.
+        let listOfPolls = eventBus.listOfPolls();
+        console.log(listOfPolls);
+        
+        eventBus.startPolling('somethingHappend', myFunction, 2000);
+        eventBus.startPolling('checkingNewMails', checkingNewMailsFunc, 1000);
+        eventBus.startPolling('someEvent', myFunction, 3100);
+        
+        // The event "checkingNewMails" will be stopped after 9 seconds (Timeout just for testing)
+        setTimeout(function() {
+            eventBus.stopPolling('checkingNewMails');
+            console.log(listOfPolls);
+        }, 9000);
+
+
+    </script>
+</body>
+</html>
+
+
+
+
+
